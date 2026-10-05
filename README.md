@@ -15,7 +15,7 @@ Install the package:
 python -m pip install .
 ```
 
-For development, install the test and quality tools too:
+For development and distribution checks, install the test and quality tools too:
 
 ```console
 python -m pip install -e ".[dev]"
@@ -54,6 +54,16 @@ with NyaaAPI() as api:
 
 ### Fetch a torrent by ID
 
+`get()` returns a `TorrentDetails` envelope; the torrent model is in `details.data`.
+
+```python
+with NyaaAPI() as api:
+    details = api.get(1234567)
+    print(details.data.title)
+```
+
+### Fetch a torrent by ID
+
 ```python
 with NyaaAPI() as api:
     details = api.get(1234567)
@@ -69,6 +79,8 @@ with NyaaAPI() as api:
     for torrent in api.iter_search("Mushoku Tensei", max_pages=10):
         print(torrent.title)
 ```
+
+You can use the same uploader filters while iterating with `iter_user()`.
 
 ## Asynchronous use
 

@@ -5,7 +5,7 @@ from typing import Any
 import httpx
 import pytest
 
-from nyaaapi import NyaaAPI
+from nyaaapi import NyaaAPI, SortOrder
 from nyaaapi.exceptions import NyaaAPINotFoundError, NyaaAPIResponseError
 
 
@@ -28,6 +28,19 @@ def test_search_sends_defined_params_only() -> None:
     assert dict(requests[0].url.params) == {"q": "Mushoku Tensei", "category": "1_2", "page": "2"}
 
 
+def test_search_accepts_documented_sort_order_enum_and_plain_values() -> None:
+    requests: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        return httpx.Response(200, json={"count": 0, "data": []})
+
+    with NyaaAPI(transport=httpx.MockTransport(handler)) as api:
+        api.search("Mushoku Tensei", sort="seeders", order=SortOrder.DESC)
+        api.search("Mushoku Tensei", sort="seeders", order="desc")
+    assert all(request.url.params["order"] == "desc" for request in requests)
+
+
 def test_user_and_id_routes_parse_fixture_data() -> None:
     payloads = [load_fixture("user"), load_fixture("detail")]
     requests: list[httpx.Request] = []
@@ -37,11 +50,12 @@ def test_user_and_id_routes_parse_fixture_data() -> None:
         return httpx.Response(200, json=payloads[len(requests) - 1])
 
     with NyaaAPI(transport=httpx.MockTransport(handler)) as api:
-        result = api.user("Tsundere-Raws")
+        result = api.user("Tsundere-Raws", query="Mushoku Tensei")
         details = api.get(1234567)
     assert len(result) == 75
     assert details.data.infohash
     assert requests[0].url.path == "/nyaa/user/Tsundere-Raws"
+    assert requests[0].url.params["q"] == "Mushoku Tensei"
     assert requests[1].url.path == "/nyaa/id/1234567"
 
 
