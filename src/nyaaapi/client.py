@@ -1,0 +1,1 @@
+"""NyaaAPI package module."""
