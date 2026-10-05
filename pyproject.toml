@@ -24,6 +24,7 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--strict-markers"
+markers = ["integration: optional tests that contact the live Nyaa-API"]
 
 [tool.ruff]
 line-length = 100

@@ -6,7 +6,7 @@ import httpx
 import pytest
 
 from nyaaapi import NyaaAPI
-from nyaaapi.exceptions import NyaaAPIResponseError
+from nyaaapi.exceptions import NyaaAPINotFoundError, NyaaAPIResponseError
 
 
 def load_fixture(name: str) -> dict[str, Any]:
@@ -47,7 +47,7 @@ def test_user_and_id_routes_parse_fixture_data() -> None:
 
 def test_http_errors_propagate_and_invalid_json_is_reported() -> None:
     with NyaaAPI(transport=httpx.MockTransport(lambda request: httpx.Response(404))) as api:
-        with pytest.raises(httpx.HTTPStatusError):
+        with pytest.raises(NyaaAPINotFoundError):
             api.home()
     transport = httpx.MockTransport(lambda request: httpx.Response(200, text="nope"))
     with NyaaAPI(transport=transport) as api:
