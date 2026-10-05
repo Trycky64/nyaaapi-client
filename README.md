@@ -59,14 +59,6 @@ with NyaaAPI() as api:
 ```python
 with NyaaAPI() as api:
     details = api.get(1234567)
-    print(details.data.title)
-```
-
-### Fetch a torrent by ID
-
-```python
-with NyaaAPI() as api:
-    details = api.get(1234567)
     print(details.data.title, details.data.uploader)
 ```
 

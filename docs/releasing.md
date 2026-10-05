@@ -35,4 +35,4 @@ After validating the TestPyPI install, create the final Git tag and publish the 
 python -m twine upload dist/*
 ```
 
-The project must be pushed to a GitHub repository before a GitHub release can be published. Trusted publishing also requires configuring the repository owner, repository name, workflow filename, and PyPI project on the respective services; this repository currently has no remote configured.
+The project must be pushed to its GitHub repository before a GitHub release can be published. Trusted publishing also requires configuring the repository owner, repository name, workflow filename, and PyPI project on the respective services.
