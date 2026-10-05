@@ -1,0 +1,573 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Nyaa-API",
+    "description": "Unofficial Nyaa API",
+    "contact": {
+      "url": "https://github.com/Vivek-Kolhe"
+    },
+    "version": "2.0.1"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "Home",
+        "description": "Home Route: Returns app details.",
+        "operationId": "home__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nyaa": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "Nyaa Category Search",
+        "operationId": "nyaa_category_search_nyaa_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Search query",
+              "description": "The search query for torrents."
+            },
+            "description": "The search query for torrents."
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Torrent category",
+              "description": "Filter torrents by category."
+            },
+            "description": "Filter torrents by category."
+          },
+          {
+            "name": "sub_category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Torrent sub category",
+              "description": "Filter torrents by subcategory."
+            },
+            "description": "Filter torrents by subcategory."
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Sort torrents",
+              "description": "Sort torrents by a particular attribute."
+            },
+            "description": "Sort torrents by a particular attribute."
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Sorting order",
+              "description": "Order in which torrents should be sorted (asc or desc)."
+            },
+            "description": "Order in which torrents should be sorted (asc or desc)."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Page",
+              "description": "Page number for pagination.",
+              "default": 1
+            },
+            "description": "Page number for pagination."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sukebei": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "Sukebei Category Search",
+        "operationId": "sukebei_category_search_sukebei_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Search query",
+              "description": "The search query for torrents."
+            },
+            "description": "The search query for torrents."
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Torrent category",
+              "description": "Filter torrents by category."
+            },
+            "description": "Filter torrents by category."
+          },
+          {
+            "name": "sub_category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Torrent sub category",
+              "description": "Filter torrents by subcategory."
+            },
+            "description": "Filter torrents by subcategory."
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Sort torrents",
+              "description": "Sort torrents by a particular attribute."
+            },
+            "description": "Sort torrents by a particular attribute."
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Sorting order",
+              "description": "Order in which torrents should be sorted (asc or desc)."
+            },
+            "description": "Order in which torrents should be sorted (asc or desc)."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Page",
+              "description": "Page number for pagination.",
+              "default": 1
+            },
+            "description": "Page number for pagination."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nyaa/id/{torrent_id}": {
+      "get": {
+        "tags": [
+          "ID Search"
+        ],
+        "summary": "Nyaa Id Search",
+        "operationId": "nyaa_id_search_nyaa_id__torrent_id__get",
+        "parameters": [
+          {
+            "name": "torrent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Torrent Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sukebei/id/{torrent_id}": {
+      "get": {
+        "tags": [
+          "ID Search"
+        ],
+        "summary": "Sukebei Id Search",
+        "operationId": "sukebei_id_search_sukebei_id__torrent_id__get",
+        "parameters": [
+          {
+            "name": "torrent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Torrent Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nyaa/user/{user_name}": {
+      "get": {
+        "tags": [
+          "User search"
+        ],
+        "summary": "Nyaa User Search",
+        "operationId": "nyaa_user_search_nyaa_user__user_name__get",
+        "parameters": [
+          {
+            "name": "user_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Name"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Search query",
+              "description": "The search query for torrents."
+            },
+            "description": "The search query for torrents."
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Torrent category",
+              "description": "Filter torrents by category."
+            },
+            "description": "Filter torrents by category."
+          },
+          {
+            "name": "sub_category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Torrent sub category",
+              "description": "Filter torrents by subcategory."
+            },
+            "description": "Filter torrents by subcategory."
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Sort torrents",
+              "description": "Sort torrents by a particular attribute."
+            },
+            "description": "Sort torrents by a particular attribute."
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Sorting order",
+              "description": "Order in which torrents should be sorted (asc or desc)."
+            },
+            "description": "Order in which torrents should be sorted (asc or desc)."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Page",
+              "description": "Page number for pagination.",
+              "default": 1
+            },
+            "description": "Page number for pagination."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sukebei/user/{user_name}": {
+      "get": {
+        "tags": [
+          "User search"
+        ],
+        "summary": "Sukebei User Search",
+        "operationId": "sukebei_user_search_sukebei_user__user_name__get",
+        "parameters": [
+          {
+            "name": "user_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Name"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Search query",
+              "description": "The search query for torrents."
+            },
+            "description": "The search query for torrents."
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Torrent category",
+              "description": "Filter torrents by category."
+            },
+            "description": "Filter torrents by category."
+          },
+          {
+            "name": "sub_category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Torrent sub category",
+              "description": "Filter torrents by subcategory."
+            },
+            "description": "Filter torrents by subcategory."
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Sort torrents",
+              "description": "Sort torrents by a particular attribute."
+            },
+            "description": "Sort torrents by a particular attribute."
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Sorting order",
+              "description": "Order in which torrents should be sorted (asc or desc)."
+            },
+            "description": "Order in which torrents should be sorted (asc or desc)."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Page",
+              "description": "Page number for pagination.",
+              "default": 1
+            },
+            "description": "Page number for pagination."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
