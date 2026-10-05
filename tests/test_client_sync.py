@@ -10,7 +10,8 @@ from nyaaapi.exceptions import NyaaAPIResponseError
 
 
 def load_fixture(name: str) -> dict[str, Any]:
-    return json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))
+    path = Path(__file__).parent / "fixtures" / f"{name}.json"
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def test_search_sends_defined_params_only() -> None:
@@ -48,6 +49,7 @@ def test_http_errors_propagate_and_invalid_json_is_reported() -> None:
     with NyaaAPI(transport=httpx.MockTransport(lambda request: httpx.Response(404))) as api:
         with pytest.raises(httpx.HTTPStatusError):
             api.home()
-    with NyaaAPI(transport=httpx.MockTransport(lambda request: httpx.Response(200, text="nope"))) as api:
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, text="nope"))
+    with NyaaAPI(transport=transport) as api:
         with pytest.raises(NyaaAPIResponseError):
             api.home()

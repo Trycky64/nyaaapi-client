@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Typed sync and async Python client for the unofficial Nyaa-API"
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "MIT"}
+license = "MIT"
 authors = [{name = "NyaaAPI Client contributors"}]
 dependencies = ["httpx>=0.27,<1"]
 

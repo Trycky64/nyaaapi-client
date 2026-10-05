@@ -12,3 +12,17 @@ with NyaaAPI() as api:
     for torrent in page:
         print(torrent.title)
 ```
+
+The asynchronous client supports the same endpoints and pagination:
+
+```python
+import asyncio
+from nyaaapi import AsyncNyaaAPI
+
+async def main():
+    async with AsyncNyaaAPI() as api:
+        async for torrent in api.iter_search("Mushoku Tensei", max_pages=3):
+            print(torrent.title)
+
+asyncio.run(main())
+```

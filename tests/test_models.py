@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -30,7 +31,10 @@ def test_detail_model_includes_comments_and_utc_time() -> None:
     assert detail.infohash
     assert detail.comments is not None
     assert detail.comments[0].time is not None
-    assert detail.comments[0].time.utcoffset().total_seconds() == 0
+    comment_time = detail.comments[0].time
+    assert isinstance(comment_time, datetime)
+    assert comment_time.utcoffset() is not None
+    assert comment_time.utcoffset().total_seconds() == 0
 
 
 def test_home_model_uses_observed_fields() -> None:

@@ -8,22 +8,32 @@ from nyaaapi import NyaaAPI
 
 
 def first_row() -> dict[str, Any]:
-    return json.loads((Path(__file__).parent / "fixtures" / "search.json").read_text(encoding="utf-8"))["data"][0]
+    path = Path(__file__).parent / "fixtures" / "search.json"
+    return json.loads(path.read_text(encoding="utf-8"))["data"][0]
 
 
 def test_pagination_deduplicates_and_stops_on_empty_page() -> None:
-    row = first_row()
+    first = first_row()
+    second = json.loads(
+        (Path(__file__).parent / "fixtures" / "search.json").read_text(encoding="utf-8")
+    )["data"][1]
     calls: list[int] = []
 
     def handler(request: httpx.Request) -> httpx.Response:
         page = int(request.url.params["page"])
         calls.append(page)
-        payload = {"count": 1, "data": [row]} if page < 3 else {"count": 0, "data": []}
+        if page == 1:
+            data = [first]
+        elif page == 2:
+            data = [second, first]
+        else:
+            data = []
+        payload = {"count": len(data), "data": data}
         return httpx.Response(200, json=payload)
 
     with NyaaAPI(transport=httpx.MockTransport(handler)) as api:
         results = list(api.iter_search("title"))
-    assert len(results) == 1
+    assert len(results) == 2
     assert calls == [1, 2, 3]
 
 
