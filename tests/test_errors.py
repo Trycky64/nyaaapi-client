@@ -62,7 +62,9 @@ def test_transport_failure_maps_to_http_error() -> None:
 )
 def test_invalid_json_and_shape_include_context(content: bytes, message: str) -> None:
     transport = httpx.MockTransport(
-        lambda request: httpx.Response(200, content=content, headers={"content-type": "application/json"})
+        lambda request: httpx.Response(
+            200, content=content, headers={"content-type": "application/json"}
+        )
     )
     with NyaaAPI(transport=transport) as api:
         with pytest.raises(NyaaAPIResponseError, match=message) as caught:
