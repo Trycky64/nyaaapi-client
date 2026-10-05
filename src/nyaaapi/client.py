@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable, Iterator
 from typing import Any, Literal
 from urllib.parse import quote
 
@@ -9,7 +10,7 @@ import httpx
 
 from .constants import DEFAULT_BASE_URL, DEFAULT_TIMEOUT
 from .exceptions import NyaaAPIResponseError
-from .models import HomeInfo, SearchResults, TorrentDetails
+from .models import HomeInfo, SearchResults, Torrent, TorrentDetails
 
 Source = Literal["nyaa", "sukebei"]
 
@@ -77,3 +78,46 @@ class NyaaAPI:
     def get(self, torrent_id: int, *, source: Source = "nyaa") -> TorrentDetails:
         """Fetch a torrent detail object by numeric ID."""
         return TorrentDetails.from_dict(self._get(f"/{source}/id/{torrent_id}"))
+
+    def iter_search(self, query: str | None = None, *, page: int = 1,
+                    max_pages: int | None = None, category: str | None = None,
+                    sub_category: str | None = None, sort: str | None = None,
+                    order: str | None = None, source: Source = "nyaa") -> Iterator[Torrent]:
+        """Yield unique torrents across pages, stopping at an empty or repeated page."""
+        return self._iterate(
+            lambda current: self.search(query, page=current, category=category,
+                                        sub_category=sub_category, sort=sort, order=order, source=source),
+            page, max_pages,
+        )
+
+    def iter_user(self, user_name: str, query: str | None = None, *, page: int = 1,
+                  max_pages: int | None = None, category: str | None = None,
+                  sub_category: str | None = None, sort: str | None = None,
+                  order: str | None = None, source: Source = "nyaa") -> Iterator[Torrent]:
+        """Yield unique uploads for a user across pages."""
+        return self._iterate(
+            lambda current: self.user(user_name, query, page=current, category=category,
+                                      sub_category=sub_category, sort=sort, order=order, source=source),
+            page, max_pages,
+        )
+
+    @staticmethod
+    def _iterate(fetch: Callable[[int], SearchResults], start_page: int,
+                 max_pages: int | None) -> Iterator[Torrent]:
+        current = start_page
+        seen: set[str] = set()
+        pages = 0
+        while max_pages is None or pages < max_pages:
+            results = fetch(current)
+            pages += 1
+            if not results.data:
+                break
+            fresh = 0
+            for torrent in results:
+                if torrent.link not in seen:
+                    seen.add(torrent.link)
+                    fresh += 1
+                    yield torrent
+            if fresh == 0:
+                break
+            current += 1
